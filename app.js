@@ -51,7 +51,15 @@ app.get('/add-blog', (req, res) => {
 
 
 app.get('/', (req, res) => {
-    res.render('index', { title: 'Home' });
+    let blogs = [];
+    Blog.find().then((result) => {
+        console.log(result);
+        blogs = result;
+    }).catch((err) => {
+        console.log(err);
+    });
+
+    res.render('index', { title: 'Home', blogs });
 });
 
 app.get('/about', (req, res) => {
