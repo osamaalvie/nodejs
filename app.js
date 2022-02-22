@@ -25,9 +25,12 @@ app.set('view engine', 'ejs');
 
 
 
-//logging
+//Middlewares
+//static files
 app.use(express.static('public'));
-
+//request body
+app.use(express.urlencoded({ extended: true }));
+//logging
 app.use(morgan('dev'));
 
 
@@ -48,26 +51,49 @@ app.get('/add-blog', (req, res) => {
         });
 
 });
-
-
 app.get('/', (req, res) => {
-    let blogs = [];
-    Blog.find().then((result) => {
-        console.log(result);
-        blogs = result;
+
+    res.redirect('/blogs');
+});
+
+app.get('/blogs', (req, res) => {
+
+    Blog.find().sort({ createdAt: -1 })
+        .then((result) => {
+            res.render('index', { title: 'All Blogs', blogs: result })
+        }).catch((err) => {
+            console.log(err);
+        });
+
+});
+
+app.post('/blogs', (req, res) => {
+    const blog = new Blog(req.body);
+
+    blog.save().then((result) => {
+        res.redirect('/blogs');
+    })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
+app.get('/blogs/:id', (req, res) => {
+    const id = req.params.id;
+    Blog.findById(id).then((result) => {
+        res.render('details', { title: 'Blog Details', blog: result });
     }).catch((err) => {
         console.log(err);
     });
 
-    res.render('index', { title: 'Home', blogs });
 });
 
 app.get('/about', (req, res) => {
-    res.render('about', { title: 'About' });
+    res.render('about', { title: 'Blog' });
 });
 
-app.get('/about-me', (req, res) => {
-    res.render('about', { title: 'About' });
+app.get('/blogs/create', (req, res) => {
+    res.render('create', { title: 'Create Blog' });
 });
 
 //middleware
