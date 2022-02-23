@@ -1,21 +1,18 @@
 <html lang="en">
-<%- include('./partials/head.ejs') %>
+  <%- include('./partials/head.ejs') %>
 
   <body>
     <h1>Home</h1>
 
     <%- include('./partials/nav.ejs') %>
 
-      <div class="content">
-        <h2>Blog Detail </h2>
+    <div class="content">
+      <h2>Blog Detail</h2>
 
-        <h3 class="title">
-            <%= blog.title%>
-          </h3>
-          <p class="snippet">
-            <%= blog.snippet%>
-          </p>
-      </div>
+      <h3 class="title"><%= blog.title%></h3>
+      <p class="snippet"><%= blog.snippet%></p>
+
+      <a data-doc="<%= blog._id%>">delete</a>
+    </div>
   </body>
-
 </html>
