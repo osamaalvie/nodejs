@@ -1,18 +1,38 @@
 <html lang="en">
-  <%- include('./partials/head.ejs') %>
+<%- include('./partials/head.ejs') %>
 
   <body>
     <h1>Home</h1>
 
     <%- include('./partials/nav.ejs') %>
 
-    <div class="content">
-      <h2>Blog Detail</h2>
+      <div class="content">
+        <h2>Blog Detail</h2>
 
-      <h3 class="title"><%= blog.title%></h3>
-      <p class="snippet"><%= blog.snippet%></p>
+        <h3 class="title">
+          <%= blog.title%>
+        </h3>
+        <p class="snippet">
+          <%= blog.snippet%>
+        </p>
 
-      <a data-doc="<%= blog._id%>">delete</a>
-    </div>
+        <a class="delete" data-doc="<%= blog._id%>">Delete</a>
+      </div>
+
+      <script>
+        const trashCan = document.querySelector('a.delete');
+        trashCan.addEventListener('click', (e) => {
+          const endpoint = `/blog/${trashCan.dataset.doc}`;
+
+          fetch(endpoint, {
+            method: 'DELETE'
+          }).then((result) => {
+            console.log(result);
+          }).catch((err) => {
+            console.log(err);
+          });
+        });
+      </script>
   </body>
+
 </html>
